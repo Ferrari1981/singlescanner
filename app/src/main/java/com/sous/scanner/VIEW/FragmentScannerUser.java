@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -65,6 +66,7 @@ public class FragmentScannerUser extends Fragment {
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private  String КлючДляFibaseOneSingnal;
     private     Long version=0l;
+    private SharedPreferences preferences;
 
     @SuppressLint({"RestrictedApi", "MissingPermission"})
     @Override
@@ -91,6 +93,7 @@ public class FragmentScannerUser extends Fragment {
             МетодКпопкаВозвращениеBACK();
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
+            preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"

@@ -11,6 +11,21 @@
     tools:context=".VIEW.FragmentScannerUser">
 
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:minWidth="200dp"
+        android:minHeight="40dp"
+        android:text="Статус"
+        app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bottomcontrolfragmen2"
         style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
@@ -82,5 +97,7 @@
         app:strokeColor="#F5FFFA"
         app:strokeWidth="0dp"
         tools:visibility="visible" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
