@@ -83,6 +83,7 @@ public class ServiceControllerКлиент extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
+        // TODO: 07.02.2023 клиент сервер 
         try {
             Log.d(context.getClass().getName(), "\n"
                     + " время: " + new Date() + "\n+" +
