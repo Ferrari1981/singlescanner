@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/fragment1scanner"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".VIEW.FragmentScannerUser"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:id="@+id/activitynain_for_Taskslinelayoutrela3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="350dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerViewNewScanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:padding="5dp"
+            android:background="#FFFFFF"
+            android:minHeight="500dp"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints" />
+
+    </RelativeLayout>
+</LinearLayout>
+

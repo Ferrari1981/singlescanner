@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/activity_main_newscanner"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".VIEW.MainActivityNewScanner"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar_laoytscanner"/>
+    <RelativeLayout
+        android:id="@+id/activitynain_for_Taskslinelayoutrela3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+       <FrameLayout
+           android:id="@+id/framelauoutScanner"
+           android:layout_width="match_parent"
+           android:layout_above="@+id/ProgressBarscanner"
+           android:background="#FFFFFF"
+           android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/ProgressBarscanner"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/BottomNavigationViewScanner"
+            android:background="#FFFFFF"
+            android:layout_height="4dp"
+            android:scaleY="3"
+            android:scaleX="1"
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:visibility="invisible" />
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/BottomNavigationViewScanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#0A524B"
+            android:scrollbarFadeDuration="150"
+            android:translationZ="5dp"
+            app:itemIconTint="#F2F5F5"
+            app:menu="@menu/menufornavigator_scanner"
+            tools:ignore="MissingConstraints" />
+
+    </RelativeLayout>
+</LinearLayout>
+

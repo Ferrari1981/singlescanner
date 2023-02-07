@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/id_lback"
+        android:checkable="true"
+        android:contentDescription="Выйти"
+        android:enabled="true"
+        android:icon="@drawable/icon_scanner_exit_down"
+        android:actionMenuTextColor="#0A524B"
+        android:tooltipText="назад в приложение"
+        android:title="Выйти" />
+
+
+
+    <item
+        android:id="@+id/id_scanner_history"
+        android:contentDescription="История"
+        android:icon="@drawable/icon_history_scanner"
+        android:title="История"
+        android:actionMenuTextColor="#0A524B"
+        android:tooltipText="История" />
+
+
+
+    />
+</menu>

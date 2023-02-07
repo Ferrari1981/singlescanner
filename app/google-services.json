@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "479917030764",
+    "project_id": "scanner-ff91d",
+    "storage_bucket": "scanner-ff91d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:479917030764:android:d52228189f69eb42b0c749",
+        "android_client_info": {
+          "package_name": "com.sous.scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "479917030764-e6g34c27d2nqcqplarhh3u6fsej5eiec.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeLMrBxpME2C6-Safa2ygnfw0BvplUMTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "479917030764-e6g34c27d2nqcqplarhh3u6fsej5eiec.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
