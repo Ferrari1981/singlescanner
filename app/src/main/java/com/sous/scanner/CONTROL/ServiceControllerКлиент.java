@@ -80,6 +80,7 @@ public class ServiceControllerКлиент extends IntentService {
     }
     private   MutableLiveData<String> mediatorLiveDataGATT;
     private     Long version=0l;
+    private  String ДействиеДляСервераGATTОТКлиента;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -249,12 +250,16 @@ public class ServiceControllerКлиент extends IntentService {
         return  ОтветСамПингGATTServerClient;
     }
     // TODO: 30.11.2022 сервер СКАНИРОВАНИЯ
-    public  void МетодКлиентЗапускСканера(@NonNull Handler handler, @NonNull Activity activity, @NonNull   BluetoothManager     bluetoothManager,@NonNull  MutableLiveData<String> mediatorLiveDatagatt) {
+    public  void МетодКлиентЗапускСканера(@NonNull Handler handler, @NonNull Activity activity,
+                                          @NonNull   BluetoothManager     bluetoothManager,
+                                          @NonNull  MutableLiveData<String> mediatorLiveDatagatt,
+                                          @NonNull String ДействиеДляСервераGATTОТКлиента ) {
         this.context = activity;
         this.activity = activity;
         this.handler = handler;
         this.bluetoothManager=bluetoothManager;
         this.mediatorLiveDataGATT=mediatorLiveDatagatt;
+        this.ДействиеДляСервераGATTОТКлиента=ДействиеДляСервераGATTОТКлиента;
         // TODO: 08.12.2022 уснатавливаем настройки Bluetooth
         Log.w(this.getClass().getName(), "   bluetoothManager  "+bluetoothManager+ " bluetoothAdapter " +bluetoothAdapter + "mediatorLiveDataGATT " +mediatorLiveDataGATT);
         try{
@@ -371,7 +376,7 @@ public class ServiceControllerКлиент extends IntentService {
                                                 Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing "+new Date().toLocaleString());
                                             });
                                             // TODO: 01.02.2023 отправляем двннеы
-                                            characteristics.setValue("действие:" +"на работу");
+                                            characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
                                             Boolean successОтправка=     gatt.writeCharacteristic(characteristics);
                                             if(successОтправка==true){
                                                 Log.i(TAG, "Succes from GATT server. successОтправка " +successОтправка );
