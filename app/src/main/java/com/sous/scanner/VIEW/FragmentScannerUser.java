@@ -644,7 +644,7 @@ public class FragmentScannerUser extends Fragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
             try {
                 Log.i(this.getClass().getName(), "   создание согласования" + myViewHolder );
-                МетодЗапускаемСлужбуGATTCleint(holder);
+                МетодЗапускаемСлужбуGATTCleintКлик(holder);
                 МетодАнимации(holder);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -686,105 +686,24 @@ public class FragmentScannerUser extends Fragment {
 
 
         ///todo первый метод #1
-        private void МетодЗапускаемСлужбуGATTCleint(@NonNull MyViewHolder holder) {
+        private void МетодЗапускаемСлужбуGATTCleintКлик(@NonNull MyViewHolder holder) {
             try {
                 Log.i(this.getClass().getName(), "   holder " + holder);
                 holder.materialButtonКотрольПриход.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 v " + v );
-                        progressСканер.setVisibility(View.VISIBLE);
-                        v.startAnimation(animation);
-                        mediatorLiveDataGATT = new MutableLiveData<>();
                         ДействиеДляСервераGATTОТКлиента= "на работу";
-                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                        v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-                        // TODO: 30.01.2023 ВТОРАЯ ЧАСТЬ ОТВЕТ ПРОВЕТ GATT SERVER/CLIENT
-                        LifecycleOwner lifecycleOwner =getActivity() ;
-                        lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
-                            @Override
-                            public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
-                                source.getLifecycle().getCurrentState();
-                                event.getTargetState().name();
-                            }
-                        });
-                        mediatorLiveDataGATT.setValue("ServiceBindingTStart");
-                        mediatorLiveDataGATT.observe(lifecycleOwner, new Observer<String>() {
-                            @Override
-                            public void onChanged(String ОтветОтСерврера) {
-                                if (mediatorLiveDataGATT.getValue()!=null) {
-                                    Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
-                                    // TODO: 24.01.2023  показываем поозователю Статуса
-
-                                    switch (mediatorLiveDataGATT.getValue().toString()){
-                                        case "ServiceBindingTStart" :
-                                            handler.post(()->{
-                                                holder.materialButtonКотрольПриход.setText("В процессе...");
-                                            });
-                                            break;
-                                        case "SERVER#SERVER#SouConnect" :
-                                            handler.post(()-> {
-                                                holder.materialButtonКотрольПриход.setText("Коннект...");
-                                            });
-                                            break;
-                                        case "GATTCLIENTProccessing" :
-                                            handler.post(()->{
-                                                holder.materialButtonКотрольПриход.setText("Ответ...");
-                                            });
-                                            break;
-                                        case "SERVER#SousAvtoSuccess" :
-                                            // TODO: 07.02.2023 Успешный статус
-                                            handler.post(()->{
-                                                holder.materialButtonКотрольПриход.setText(ДействиеДляСервераGATTОТКлиента);
-                                                holder.materialButtonКотрольПриход.startAnimation(animation);
-                                                holder.materialButtonКотрольПриход.setText("Успешно");
-                                                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                                v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
-                                                // TODO: 07.02.2023
-                                                // TODO: 07.02.2023  записываем смены статуса
-                                                МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента,new Date().toLocaleString());
-                                                handler.postDelayed(()-> {
-                                                    holder.materialButtonКотрольПриход.setText("На работу");
-                                                },3000);
-
-                                            });
-                                            break;
-                                        case "SERVER#SERVER#SousAvtoERROR" :
-                                        case "SERVER#SERVER#SousAvtoNULL" :
-                                            handler.postDelayed(()->{
-                                                holder.materialButtonКотрольПриход.setText("Нет связи");
-                                                handler.postDelayed(()-> {
-                                                    holder.materialButtonКотрольПриход.setText("На работу");
-                                                },3000);
-                                            },1000);
-                                            break;
-
-                                        case "SERVER#SousAvtoDONTDIVICE" :
-                                            handler.postDelayed(()->{
-                                                holder.materialButtonКотрольПриход.setText("Нет  сопряжение");
-                                                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-                                                v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-                                                handler.postDelayed(()-> {
-                                                    holder.materialButtonКотрольПриход.setText("На работу");
-                                                },3000);
-
-                                            },1000);
-                                            break;
-                                        case "SERVER#ENDSCANNERGATA" :
-                                            handler.postDelayed(()-> {
-                                                holder.materialButtonКотрольПриход.setText("На работу");
-                                            },1000);
-                                            break;
-
-                                    }
-                                }
-                            }
-                        });
-
-                        // TODO: 06.12.2022 запускаем сканирование клиента
-                        serviceControllerКлиент.МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT,ДействиеДляСервераGATTОТКлиента);
-                        Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
-
+                        Log.i(this.getClass().getName(), "  materialButtonКотрольПриход  создание МетодЗаполенияФрагмента1 v " + v );
+                        МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,holder.materialButtonКотрольПриход);
+                    }
+                });
+                Log.i(this.getClass().getName(), "   holder " + holder);
+                holder.materialButtonКотрольВыход.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ДействиеДляСервераGATTОТКлиента= "с работы";
+                        Log.i(this.getClass().getName(), "    materialButtonКотрольВыход создание МетодЗаполенияФрагмента1 v " + v );
+                        МетодРаботыСоСлужбойGATTОтСервера(v,holder,ДействиеДляСервераGATTОТКлиента,holder.materialButtonКотрольВыход);
                     }
                 });
             } catch (Exception e) {
@@ -802,7 +721,119 @@ public class FragmentScannerUser extends Fragment {
                 new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
             }
         }
+        private void МетодРаботыСоСлужбойGATTОтСервера( @NonNull View v,@NonNull MyViewHolder holder
+                ,@NonNull String ДействиеДляСервераGATTОТКлиента,@NonNull MaterialButton materialButtonКакоеДействие) {
+            try {
+                progressСканер.setVisibility(View.VISIBLE);
+                v.startAnimation(animation);
+                mediatorLiveDataGATT = new MutableLiveData<>();
+                Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                v2.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
+                // TODO: 30.01.2023 ВТОРАЯ ЧАСТЬ ОТВЕТ ПРОВЕТ GATT SERVER/CLIENT
+                LifecycleOwner lifecycleOwner =getActivity() ;
+                lifecycleOwner.getLifecycle().addObserver(new LifecycleEventObserver() {
+                    @Override
+                    public void onStateChanged(@NonNull LifecycleOwner source, @NonNull Lifecycle.Event event) {
+                        source.getLifecycle().getCurrentState();
+                        event.getTargetState().name();
+                    }
+                });
+                mediatorLiveDataGATT.setValue("ServiceBindingTStart");
+                mediatorLiveDataGATT.observe(lifecycleOwner, new Observer<String>() {
+                    @Override
+                    public void onChanged(String ОтветОтСерврера) {
+                        if (mediatorLiveDataGATT.getValue()!=null) {
+                            Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
+                            // TODO: 24.01.2023  показываем поозователю Статуса
 
+                            switch (mediatorLiveDataGATT.getValue().toString()){
+                                case "ServiceBindingTStart" :
+                                    handler.post(()->{
+                                        materialButtonКакоеДействие.setText("В процессе...");
+                                    });
+                                    break;
+                                case "SERVER#SERVER#SouConnect" :
+                                    handler.post(()-> {
+                                        materialButtonКакоеДействие.setText("Коннект...");
+                                    });
+                                    break;
+                                case "GATTCLIENTProccessing" :
+                                    handler.post(()->{
+                                        materialButtonКакоеДействие.setText("Ответ...");
+                                    });
+                                    break;
+                                case "SERVER#SousAvtoSuccess" :
+                                    // TODO: 07.02.2023 Успешный статус
+                                    handler.post(()->{
+                                        materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        materialButtonКакоеДействие.startAnimation(animation);
+                                        materialButtonКакоеДействие.setText("Успешно");
+                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(250, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        // TODO: 07.02.2023
+                                        // TODO: 07.02.2023  записываем смены статуса
+                                        МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента,new Date().toLocaleString());
+                                        // TODO: 08.02.2023 показыввем клиент смененый статус
+                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","")+"\n"+preferences.getString("СменаДАтаРАботыGATT","");
+                                        holder. materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера);
+                                        holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
+                                        holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
+                                        handler.postDelayed(()-> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        },3000);
+
+                                    });
+                                    break;
+                                case "SERVER#SERVER#SousAvtoERROR" :
+                                case "SERVER#SERVER#SousAvtoNULL" :
+                                    handler.postDelayed(()->{
+                                        materialButtonКакоеДействие.setText("Нет связи");
+                                        handler.postDelayed(()-> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        },3000);
+                                    },1000);
+                                    break;
+
+                                case "SERVER#SousAvtoDONTDIVICE" :
+                                    handler.postDelayed(()->{
+                                        materialButtonКакоеДействие.setText("Нет  сопряжение");
+                                        Vibrator v2 = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                        v2.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                                        handler.postDelayed(()-> {
+                                            materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                        },3000);
+
+                                    },1000);
+                                    break;
+                                case "SERVER#ENDSCANNERGATA" :
+                                    handler.postDelayed(()-> {
+                                        materialButtonКакоеДействие.setText(ДействиеДляСервераGATTОТКлиента);
+                                    },1000);
+                                    break;
+
+                            }
+                        }
+                    }
+                });
+
+                // TODO: 06.12.2022 запускаем сканирование клиента
+                serviceControllerКлиент.МетодКлиентЗапускСканера(handler, getActivity(),bluetoothManager,mediatorLiveDataGATT,ДействиеДляСервераGATTОТКлиента);
+                Log.i(this.getClass().getName(), "   создание МетодЗаполенияФрагмента1 mediatorLiveDataGATT " + mediatorLiveDataGATT);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                ContentValues valuesЗаписываемОшибки = new ContentValues();
+                valuesЗаписываемОшибки.put("Error", e.toString().toLowerCase());
+                valuesЗаписываемОшибки.put("Klass", this.getClass().getName());
+                valuesЗаписываемОшибки.put("Metod", Thread.currentThread().getStackTrace()[2].getMethodName());
+                valuesЗаписываемОшибки.put("LineError", Thread.currentThread().getStackTrace()[2].getLineNumber());
+                final Object ТекущаяВерсияПрограммы = version;
+                Integer ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                valuesЗаписываемОшибки.put("whose_error", ЛокальнаяВерсияПОСравнение);
+                new SubClassErrors(getContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+            }
+        }
         private void МетодЗаписываемСтатусРаботысGATT(@NonNull String СтатусРаботыGatt ,@NonNull String ДатаСменыСтатуса) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("СменаСтатусРАботыКлиентасGATT",СтатусРаботыGatt);
