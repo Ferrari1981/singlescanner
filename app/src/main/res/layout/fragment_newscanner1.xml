@@ -9,6 +9,14 @@
     android:background="#FFFFFF"
     tools:context=".VIEW.FragmentScannerUser"
     android:orientation="vertical">
+    <ScrollView
+        android:id="@+id/scrollview_new_materials"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="horizontal|vertical"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        android:fillViewport="true">
     <RelativeLayout
         android:id="@+id/recyclerviewfragment1"
         android:layout_width="match_parent"
@@ -45,5 +53,6 @@
             android:visibility="invisible" />
 
     </RelativeLayout>
+    </ScrollView>
 </LinearLayout>
 

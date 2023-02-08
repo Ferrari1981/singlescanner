@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -37,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.sous.scanner.CONTROL.ServiceControllerКлиент;
 import com.sous.scanner.MODEL.SubClassErrors;
 import com.sous.scanner.R;
@@ -97,6 +99,7 @@ public class FragmentScannerUser extends Fragment {
             PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
             version = pInfo.getLongVersionCode();
             preferences = getContext().getSharedPreferences("sharedPreferencesХранилище", Context.MODE_MULTI_PROCESS);
+            // TODO: 08.02.2023  службы кодключения к слубже сканированиея
              serviceControllerКлиент=   binderСканнер.getService();
         } catch (Exception e) {
             e.printStackTrace();
@@ -462,7 +465,8 @@ public class FragmentScannerUser extends Fragment {
 
     // TODO: 28.02.2022 начало  MyViewHolderДляЧата
     protected class MyViewHolder extends RecyclerView.ViewHolder {
-        private MaterialButton materialButtonКотрольПриход;
+        private MaterialButton materialButtonКотрольПриход,materialButtonКотрольВыход;
+        private MaterialTextView materialTextViewСтатусПоследнегоДействие;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             try {
@@ -487,9 +491,18 @@ public class FragmentScannerUser extends Fragment {
         private void МетодИнициализацииСканера(@NonNull View itemView) {
             try {
                 Log.d(this.getClass().getName(), " отработоатл new SubClassBuccessLogin_ГлавныйКлассБизнесЛогикиФрагмент1 itemView   " + itemView);
+                // TODO: 08.02.2023 кнопка ПРИХОДА с работы
                 materialButtonКотрольПриход = itemView.findViewById(R.id.bottomcontrolfragmen1);
                 materialButtonКотрольПриход.setText("На Работу");
                 materialButtonКотрольПриход.setToggleCheckedStateOnClick(true);
+                // TODO: 08.02.2023 кнопка выхода с работы
+                materialButtonКотрольВыход = itemView.findViewById(R.id.bottomcontrolfragmen2);
+                materialButtonКотрольВыход.setText("С работы");
+                // TODO: 08.02.2023 СТАТУС послдная задача
+                materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
+                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","")+"\n"+preferences.getString("СменаДАтаРАботыGATT","");
+                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера);
+                materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 Log.d(this.getClass().getName(), " отработоатл  МетодИнициализацииСканера materialButtonКотроль " + materialButtonКотрольПриход);
             } catch (Exception e) {
                 e.printStackTrace();

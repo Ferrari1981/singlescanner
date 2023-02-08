@@ -15,24 +15,25 @@
         android:id="@+id/textView5getstatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="80dp"
-        android:minWidth="200dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:minWidth="150dp"
         android:minHeight="40dp"
         android:text="Статус"
-        android:gravity="center"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/textView4namestatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
         android:minWidth="20dp"
         android:minHeight="40dp"
@@ -41,7 +42,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bottomcontrolfragmen2"
         app:layout_constraintEnd_toStartOf="@+id/textView5getstatus"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.button.MaterialButton
