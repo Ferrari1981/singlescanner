@@ -501,7 +501,7 @@ public class FragmentScannerUser extends Fragment {
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
                 // TODO: 09.02.2023 данные из хранилища
-                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
+                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","нет");
                 String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
                 materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
                 materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
