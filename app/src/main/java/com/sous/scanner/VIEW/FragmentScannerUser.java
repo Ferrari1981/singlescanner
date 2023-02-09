@@ -500,8 +500,10 @@ public class FragmentScannerUser extends Fragment {
                 materialButtonКотрольВыход.setText("С работы");
                 // TODO: 08.02.2023 СТАТУС послдная задача
                 materialTextViewСтатусПоследнегоДействие = itemView.findViewById(R.id.textView5getstatus);
-                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","")+"\n"+preferences.getString("СменаДАтаРАботыGATT","");
-                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера);
+                // TODO: 09.02.2023 данные из хранилища
+                String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
+                String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
+                materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
                 materialTextViewСтатусПоследнегоДействие.setPaintFlags(materialTextViewСтатусПоследнегоДействие.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 Log.d(this.getClass().getName(), " отработоатл  МетодИнициализацииСканера materialButtonКотроль " + materialButtonКотрольПриход);
             } catch (Exception e) {
@@ -774,8 +776,9 @@ public class FragmentScannerUser extends Fragment {
                                         // TODO: 07.02.2023  записываем смены статуса
                                         МетодЗаписываемСтатусРаботысGATT(ДействиеДляСервераGATTОТКлиента,new Date().toLocaleString());
                                         // TODO: 08.02.2023 показыввем клиент смененый статус
-                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","")+"\n"+preferences.getString("СменаДАтаРАботыGATT","");
-                                        holder. materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера);
+                                        String ПоследнийСтатусСканера=preferences.getString("СменаСтатусРАботыКлиентасGATT","");
+                                        String ПоследнаяДатаСканера=preferences.getString("СменаДАтаРАботыGATT","");
+                                        holder.   materialTextViewСтатусПоследнегоДействие.setText(ПоследнийСтатусСканера.toUpperCase()+"\n"+ПоследнаяДатаСканера);
                                         holder. materialTextViewСтатусПоследнегоДействие.forceLayout();
                                         holder. materialTextViewСтатусПоследнегоДействие.refreshDrawableState();
                                         handler.postDelayed(()-> {
