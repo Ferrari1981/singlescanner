@@ -307,192 +307,13 @@ public class ServiceControllerКлиент extends IntentService {
                 Log.d(this.getClass().getName()," pairedDevices " +pairedDevices  + "uuidКлиент "+uuidКлиент );
             }
             ///  Set<BluetoothDevice> bluetoothDevicesДополнительный = bluetoothAdapter.getBondedDevices();
-
-
-            Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
-            pairedDevices.forEach(new Consumer<BluetoothDevice>() {///  bluetoothAdapter.getBondedDevices()
-                @Override
-                public void accept(BluetoothDevice bluetoothDevice) {
-
-                    // TODO: 26.01.2023 начало сервера GATT
-                    // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
-                    BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
-
-                        @Override
-                        public void onConnectionStateChange(BluetoothGatt gatt, int status,
-                                                            int newState) {
-                            try{
-                                switch (newState){
-                                    case BluetoothProfile.STATE_CONNECTED :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  "+new Date().toLocaleString());
-                                        handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
-                                        });
-                                        Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
-                                        Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
-                                        break;
-                                    case BluetoothProfile.STATE_DISCONNECTED :
-                                        Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange  "+new Date().toLocaleString());
-                                        if (status==133) {
-                                            handler.post(()->{
-                                                mediatorLiveDataGATT.setValue("SERVER#ENDSCANNERGATA");
-                                            });
-                                        }
-                                        gatt.close();
-                                        break;
-
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                ContentValues valuesЗаписываемОшибки=new ContentValues();
-                                valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                                valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                                valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                                valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                final Object ТекущаяВерсияПрограммы = version;
-                                Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                                valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                                new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                            }
-                        }
-                        // TODO: 26.01.2023
-                        @Override
-                        public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-                            super.onServicesDiscovered(gatt, status);
-                            try{
-                                if (status == BluetoothGatt.GATT_SUCCESS) {
-                                    BluetoothGattService services = gatt.getService(uuidКлиент);
-                                    if (services!=null) {
-                                        BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлиент);
-                                        gatt.setCharacteristicNotification(characteristics,true);
-                                        characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
-                                        ///Once you have a characteristic object, you can perform read/write
-                                        Log.i(TAG, "GATT CLIENT Proccessing from GATT server.");
-                                        if (characteristics!=null) {
-                                            handler.post(()->{
-                                                mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
-                                                Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing "+new Date().toLocaleString());
-                                            });
-                                            // TODO: 01.02.2023 отправляем двннеы
-                                            characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
-                                            Boolean successОтправка=     gatt.writeCharacteristic(characteristics);
-                                            if(successОтправка==true){
-                                                Log.i(TAG, "Succes from GATT server. successОтправка " +successОтправка );
-                                            }else{
-                                                Log.i(TAG, "Error from GATT server. successОтправка "+successОтправка );
-                                            }
-
-                                        }else{
-                                            Log.i(TAG, "GATT CLIENT characteristics "+characteristics);
-                                            handler.post(()->{
-                                                mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
-                                            });
-                                        }
-                                    } else {
-                                        Log.i(TAG, "Error from GATT server. НЕт ДЕвайса НУжного " );
-                                        handler.post(()->{
-                                            mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
-                                        });
-                                        gatt.disconnect();
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                ContentValues valuesЗаписываемОшибки=new ContentValues();
-                                valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                                valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                                valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                                valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                final Object ТекущаяВерсияПрограммы = version;
-                                Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                                valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                                new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                            }
-                        }
-
-                        @Override
-                        public void onCharacteristicRead(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic, @NonNull byte[] value, int status) {
-                            super.onCharacteristicRead(gatt, characteristic, value, status);
-                            byte[] newValueПришлиДАнныеОтКлиента= characteristic.getValue();
-                            Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента."+new String(newValueПришлиДАнныеОтКлиента));
-                        }
-
-                        @Override
-                        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-                            super.onCharacteristicChanged(gatt, characteristic);
-                            try{
-                                byte[] newValueОтветОтСервера = characteristic.getValue();
-                                if (newValueОтветОтСервера!=null) {
-                                    String ОтветОтСервераОбратно=new String(newValueОтветОтСервера);
-                                    Log.i(TAG, "Connected to GATT server  ОтветОтСервераОбратно."+ОтветОтСервераОбратно);
-                                    // TODO: 30.01.2023  ПОСЫЛАЕМ ОТВЕТ ОТ СЕРВЕРА СТАТУСА
-                                    handler.post(()->{
-                                        mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
-                                    });
-                                }
-                                gatt.disconnect();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
-                                        + Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                ContentValues valuesЗаписываемОшибки=new ContentValues();
-                                valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
-                                valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
-                                valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
-                                valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
-                                final Object ТекущаяВерсияПрограммы = version;
-                                Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
-                                valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
-                                new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
-                            }
-                        }
-
-                        @Override
-                        public void onServiceChanged(@NonNull BluetoothGatt gatt) {
-                            Log.d(this.getClass().getName(), "\n" + " gatt" + gatt);
-                            super.onServiceChanged(gatt);
-                        }
-                    };
-                    // TODO: 26.01.2023  конец сервера GATT
-                    BluetoothGatt gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
-                    Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
-                    gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
-                    gatt.readRemoteRssi();
-                    Boolean КоннектССевромGATT=     gatt.connect();
-                    Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
-                    int bondstate = bluetoothDevice.getBondState();
-                    Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
-                    ///  bluetoothDevice.fetchUuidsWithSdp();
-                    Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
-                    switch (bondstate) {
-                        case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
-                            Log.i(TAG, "BluetoothDevice.DEVICE_TYPE_UNKNOWN" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
-                            bluetoothDevice.createBond();
-                            handler.post(()->{
-                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
-                            });
-                            break;
-                        case BluetoothDevice.BOND_BONDING:
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
-                            break;
-                        case BluetoothDevice.BOND_NONE://Указывает, что удаленное устройство не связано (сопряжено).
-                            bluetoothDevice.createBond();
-                            handler.post(()->{
-                                mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
-                            });
-                            Log.i(TAG, "BluetoothDevice.BOND_NONE" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
-                            break;
-                        case BluetoothDevice.BOND_BONDED://Указывает, что удаленное устройство связано (сопряжено).
-                            Log.i(TAG, "BluetoothDevice.BOND_BONDED " + bondstate);
-                            break;
-                    }
-
-                }
+            ExecutorService esМенеджерПотоковСканер=Executors.newFixedThreadPool(pairedDevices.size());
+            esМенеджерПотоковСканер.submit(()->{
+                МетодЗапускаЦиклаСерверовGATT();
+                Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... ");
+                esМенеджерПотоковСканер.shutdown();
             });
+            Log.d(TAG, "  МетодЗапускаЦиклаСерверовGATT().... ");
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
@@ -508,11 +329,210 @@ public class ServiceControllerКлиент extends IntentService {
             new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
         }
     }
+    @SuppressLint("MissingPermission")
+    private void МетодЗапускаЦиклаСерверовGATT() {
+        try{
+        Log.d(this.getClass().getName(), "\n" + " pairedDevices.size() " + pairedDevices.size());
+        pairedDevices.forEach(new Consumer<BluetoothDevice>() {///  bluetoothAdapter.getBondedDevices()
+            @Override
+            public void accept(BluetoothDevice bluetoothDevice) {
 
+                // TODO: 26.01.2023 начало сервера GATT
+                // TODO: 25.01.2023 ПЕРВЫЙ ВАРИАНТ СЕРВЕР gatt
+                BluetoothGattCallback bluetoothGattCallback = new BluetoothGattCallback() {
+
+                    @Override
+                    public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                                        int newState) {
+                        try{
+                            switch (newState){
+                                case BluetoothProfile.STATE_CONNECTED :
+                                    Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_CONNECTED ###1 onConnectionStateChange  "+new Date().toLocaleString());
+                                    handler.post(()->{
+                                        mediatorLiveDataGATT.setValue("SERVER#SERVER#SouConnect");
+                                    });
+                                    Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
+                                    Log.d(TAG, "Trying to ДанныеОТGATTССевромGATT " + ДанныеОТGATTССевромGATT);
+                                    break;
+                                case BluetoothProfile.STATE_DISCONNECTED :
+                                    Log.i(TAG, "Connected to GATT client. BluetoothProfile.STATE_DISCONNECTED ###2  onConnectionStateChange  "+new Date().toLocaleString());
+                                    if (status==133) {
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("SERVER#ENDSCANNERGATA");
+                                        });
+                                    }
+                                    gatt.close();
+                                    break;
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            ContentValues valuesЗаписываемОшибки=new ContentValues();
+                            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            final Object ТекущаяВерсияПрограммы = version;
+                            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                        }
+                    }
+                    // TODO: 26.01.2023
+                    @Override
+                    public void onServicesDiscovered(BluetoothGatt gatt, int status) {
+                        super.onServicesDiscovered(gatt, status);
+                        try{
+                            if (status == BluetoothGatt.GATT_SUCCESS) {
+                                BluetoothGattService services = gatt.getService(uuidКлиент);
+                                if (services!=null) {
+                                    BluetoothGattCharacteristic characteristics = services.getCharacteristic(uuidКлиент);
+                                    gatt.setCharacteristicNotification(characteristics,true);
+                                    characteristics.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+                                    ///Once you have a characteristic object, you can perform read/write
+                                    Log.i(TAG, "GATT CLIENT Proccessing from GATT server.");
+                                    if (characteristics!=null) {
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("GATTCLIENTProccessing");
+                                            Log.i(TAG, "GATT CLIENT Proccessing from GATT server.GATTCLIENTProccessing "+new Date().toLocaleString());
+                                        });
+                                        // TODO: 01.02.2023 отправляем двннеы
+                                        characteristics.setValue("действие:" + ДействиеДляСервераGATTОТКлиента);
+                                        Boolean successОтправка=     gatt.writeCharacteristic(characteristics);
+                                        if(successОтправка==true){
+                                            Log.i(TAG, "Succes from GATT server. successОтправка " +successОтправка );
+                                        }else{
+                                            Log.i(TAG, "Error from GATT server. successОтправка "+successОтправка );
+                                        }
+
+                                    }else{
+                                        Log.i(TAG, "GATT CLIENT characteristics "+characteristics);
+                                        handler.post(()->{
+                                            mediatorLiveDataGATT.setValue("SERVER#SERVER#SousAvtoNULL");
+                                        });
+                                    }
+                                } else {
+                                    Log.i(TAG, "Error from GATT server. НЕт ДЕвайса НУжного " );
+                                    handler.post(()->{
+                                        mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
+                                    });
+                                    gatt.disconnect();
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            ContentValues valuesЗаписываемОшибки=new ContentValues();
+                            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            final Object ТекущаяВерсияПрограммы = version;
+                            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                        }
+                    }
+
+                    @Override
+                    public void onCharacteristicRead(@NonNull BluetoothGatt gatt, @NonNull BluetoothGattCharacteristic characteristic, @NonNull byte[] value, int status) {
+                        super.onCharacteristicRead(gatt, characteristic, value, status);
+                        byte[] newValueПришлиДАнныеОтКлиента= characteristic.getValue();
+                        Log.i(TAG, "Connected to GATT server  newValueПришлиДАнныеОтКлиента."+new String(newValueПришлиДАнныеОтКлиента));
+                    }
+
+                    @Override
+                    public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+                        super.onCharacteristicChanged(gatt, characteristic);
+                        try{
+                            byte[] newValueОтветОтСервера = characteristic.getValue();
+                            if (newValueОтветОтСервера!=null) {
+                                String ОтветОтСервераОбратно=new String(newValueОтветОтСервера);
+                                Log.i(TAG, "Connected to GATT server  ОтветОтСервераОбратно."+ОтветОтСервераОбратно);
+                                // TODO: 30.01.2023  ПОСЫЛАЕМ ОТВЕТ ОТ СЕРВЕРА СТАТУСА
+                                handler.post(()->{
+                                    mediatorLiveDataGATT.setValue(ОтветОтСервераОбратно);
+                                });
+                            }
+                            gatt.disconnect();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                                    + Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            ContentValues valuesЗаписываемОшибки=new ContentValues();
+                            valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+                            valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+                            valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+                            valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+                            final Object ТекущаяВерсияПрограммы = version;
+                            Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+                            valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+                            new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+                        }
+                    }
+
+                    @Override
+                    public void onServiceChanged(@NonNull BluetoothGatt gatt) {
+                        Log.d(this.getClass().getName(), "\n" + " gatt" + gatt);
+                        super.onServiceChanged(gatt);
+                    }
+                };
+                // TODO: 26.01.2023  конец сервера GATT
+                BluetoothGatt gatt =      bluetoothDevice.connectGatt(context, false, bluetoothGattCallback, BluetoothDevice.TRANSPORT_AUTO,0,handler);
+                Log.d(this.getClass().getName(), "\n" + " bluetoothDevice" + bluetoothDevice);
+                gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
+                gatt.readRemoteRssi();
+                Boolean КоннектССевромGATT=     gatt.connect();
+                Log.d(TAG, "Trying КоннектССевромGATT " + КоннектССевромGATT);
+                int bondstate = bluetoothDevice.getBondState();
+                Boolean ДанныеОТGATTССевромGATT=         gatt.discoverServices();
+                ///  bluetoothDevice.fetchUuidsWithSdp();
+                Log.d(TAG, "Trying to write characteristic..., first bondstate " + bondstate);
+                switch (bondstate) {
+                    case BluetoothDevice.DEVICE_TYPE_UNKNOWN:
+                        Log.i(TAG, "BluetoothDevice.DEVICE_TYPE_UNKNOWN" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                        bluetoothDevice.createBond();
+                        handler.post(()->{
+                            mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
+                        });
+                        break;
+                    case BluetoothDevice.BOND_BONDING:
+                        Log.i(TAG, "BluetoothDevice.BOND_BONDING" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                        break;
+                    case BluetoothDevice.BOND_NONE://Указывает, что удаленное устройство не связано (сопряжено).
+                        bluetoothDevice.createBond();
+                        handler.post(()->{
+                            mediatorLiveDataGATT.setValue("SERVER#SousAvtoDONTDIVICE");
+                        });
+                        Log.i(TAG, "BluetoothDevice.BOND_NONE" + bondstate);//Указывает, что удаленное устройство не связано (сопряжено).
+                        break;
+                    case BluetoothDevice.BOND_BONDED://Указывает, что удаленное устройство связано (сопряжено).
+                        Log.i(TAG, "BluetoothDevice.BOND_BONDED " + bondstate);
+                        break;
+                }
+
+            }
+        });
+    } catch (Exception e) {
+        e.printStackTrace();
+        Log.e(this.getClass().getName(), "Ошибка " + e + " Метод :" + Thread.currentThread().getStackTrace()[2].getMethodName() + " Линия  :"
+                + Thread.currentThread().getStackTrace()[2].getLineNumber());
+        ContentValues valuesЗаписываемОшибки=new ContentValues();
+        valuesЗаписываемОшибки.put("Error",e.toString().toLowerCase());
+        valuesЗаписываемОшибки.put("Klass",this.getClass().getName());
+        valuesЗаписываемОшибки.put("Metod",Thread.currentThread().getStackTrace()[2].getMethodName());
+        valuesЗаписываемОшибки.put("LineError",   Thread.currentThread().getStackTrace()[2].getLineNumber());
+        final Object ТекущаяВерсияПрограммы = version;
+        Integer   ЛокальнаяВерсияПОСравнение = Integer.parseInt(ТекущаяВерсияПрограммы.toString());
+        valuesЗаписываемОшибки.put("whose_error",ЛокальнаяВерсияПОСравнение);
+        new SubClassErrors(getApplicationContext()).МетодЗаписиОшибок(valuesЗаписываемОшибки);
+    }
+    }
 
     // TODO: 01.02.2023  класс Запуск OneSignala
-
-
 
     // TODO: 14.11.2021  ПОВТОРЫЙ ЗАПУСК ВОРК МЕНЕДЖЕР
 
